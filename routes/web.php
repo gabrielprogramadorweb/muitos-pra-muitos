@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Desenvolvedor;
+use App\Projeto;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,14 +17,22 @@ use App\Desenvolvedor;
 
 // Define uma rota para acessar desenvolvedores com seus projetos
 Route::get('/desenvolvedor_projetos', function () {
- $desenvolvedores = Desenvolvedor::with("projetos")->get();
+    // Carrega todos os desenvolvedores com seus projetos relacionados
+    $desenvolvedores = Desenvolvedor::with("projetos")->get();
+
+    // Itera sobre cada desenvolvedor
     foreach($desenvolvedores as $d) {
+        // Exibe informações do desenvolvedor
         echo "Nome do desenvolvedor: " . $d->nome . "<br>";
         echo "Cargo: " . $d->cargo . "<br>";
-        if (count($d->projetos ) > 0) {
+
+        // Verifica se o desenvolvedor possui projetos
+        if (count($d->projetos) > 0) {
+            // Exibe a lista de projetos do desenvolvedor
             echo "Projetos: <br>";
             echo "<ul>";
             foreach($d->projetos as $p) {
+                // Exibe informações de cada projeto relacionado ao desenvolvedor
                 echo "<li> Nome do projeto: " . $p->nome . " | ";
                 echo "Horas do projeto: " . $p->estimativa_horas . " | ";
                 echo "Horas trabalhadas pelo desenvolvedor: " . $p->pivot->horas_semanais . "</li>";
@@ -32,5 +41,13 @@ Route::get('/desenvolvedor_projetos', function () {
         }
         echo "<hr>";
     }
-   // return $desenvolvedores->toJson();
+});
+
+// Define uma rota para acessar projetos com seus desenvolvedores relacionados
+Route::get('/projeto_desenvolvedores', function () {
+    // Carrega todos os projetos com seus desenvolvedores relacionados
+    $projetos = Projeto::with('desenvolvedores')->get();
+
+    // Retorna os projetos em formato JSON
+    return $projetos->toJson();
 });
