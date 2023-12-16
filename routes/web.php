@@ -45,9 +45,53 @@ Route::get('/desenvolvedor_projetos', function () {
 
 // Define uma rota para acessar projetos com seus desenvolvedores relacionados
 Route::get('/projeto_desenvolvedores', function () {
-    // Carrega todos os projetos com seus desenvolvedores relacionados
-    $projetos = Projeto::with('desenvolvedores')->get();
+    $projetos = Projeto::with("desenvolvedores")->get();
+    foreach($projetos as $p) {
+        echo "Nome do projeto: " . $p->nome . "<br>";
+        echo "Estimativa de horas: " . $p->estimativa_horas . "<br>";
+        if (count($p->desenvolvedores ) > 0) {
+            echo "Desenvolvedores: <br>";
+            echo "<ul>";
+            foreach($p->desenvolvedores as $d) {
+                echo "<li> Nome do desenvolvedor: " . $d->nome . " | ";
+                echo "Cargo: " . $d->cargo . " | ";
+                echo "Horas trabalhadas pelo desenvolvedor: " . $d->pivot->horas_semanais . "</li>";
+            }
+            echo "</ul>";
+        }
+        echo "<hr>";
+    }
+    //return $projetos->toJson();
+});
 
-    // Retorna os projetos em formato JSON
-    return $projetos->toJson();
+
+Route::get('/alocar', function () {
+    $proj = Projeto::find(4);
+    if (isset($proj)) {
+        // $proj->desenvolvedores()->attach(1, ['horas_semanais' => 50]);
+        // $proj->desenvolvedores()->attach(2, ['horas_semanais' => 50]);
+        // $proj->desenvolvedores()->attach(3, ['horas_semanais' => 50]);
+        
+        // ou
+
+        $proj->desenvolvedores()->attach([
+            1 => ['horas_semanais' => 40],
+            2 => ['horas_semanais' => 50],
+            3 => ['horas_semanais' => 60],
+        ]);
+        return "OK";
+    }
+    return "Projeto nao encontrado";
+});
+
+
+Route::get('/desalocar', function () {
+    $proj = Projeto::find(4);
+    if (isset($proj)) {
+        $proj->desenvolvedores()->detach(1);
+        $proj->desenvolvedores()->detach(2);
+        $proj->desenvolvedores()->detach(3);
+        return "OK";
+    }
+    return "Projeto nao encontrado";
 });
