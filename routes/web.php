@@ -15,11 +15,22 @@ use App\Desenvolvedor;
 */
 
 // Define uma rota para acessar desenvolvedores com seus projetos
-Route::get('/desenvolvedor_projeto', function () {
-    
-    // Obtém todos os desenvolvedores com relacionamento "projetos" pré-carregado
-    $desenvolvedores = Desenvolvedor::with('projetos')->get();
-
-    // Converte a coleção de desenvolvedores para JSON e retorna
+Route::get('/desenvolvedor_projetos', function () {
+ $desenvolvedores = Desenvolvedor::with("projetos")->get();
+     /*  foreach($desenvolvedores as $d) {
+        echo "Nome do desenvolvedor: " . $d->nome . "<br>";
+        echo "Cargo: " . $d->cargo . "<br>";
+        if (count($d->projetos ) > 0) {
+            echo "Projetos: <br>";
+            echo "<ul>";
+            foreach($d->projetos as $p) {
+                echo "<li> Nome do projeto: " . $p->nome . " | ";
+                echo "Horas do projeto: " . $p->estimativa_horas . " | ";
+                echo "Horas trabalhadas pelo desenvolvedor: " . $p->pivot->horas_semanais . "</li>";
+            }
+            echo "</ul>";
+        }
+        echo "<hr>";
+    }*/
     return $desenvolvedores->toJson();
 });

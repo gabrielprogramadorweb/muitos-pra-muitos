@@ -14,6 +14,6 @@ class Desenvolvedor extends Model
         // Retorna uma instância de BelongsToMany
         // - O primeiro parâmetro é a classe do modelo relacionado (App\Projeto)
         // - O segundo parâmetro é o nome da tabela intermediária que armazena as alocações (alocacoes)
-        return $this->belongsToMany("App\Projeto", "alocacoes");
+        return $this->belongsToMany("App\Projeto", "alocacoes")->withPivot('horas_semanais');
     }
 }
