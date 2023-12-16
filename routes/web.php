@@ -17,7 +17,7 @@ use App\Desenvolvedor;
 // Define uma rota para acessar desenvolvedores com seus projetos
 Route::get('/desenvolvedor_projetos', function () {
  $desenvolvedores = Desenvolvedor::with("projetos")->get();
-     /*  foreach($desenvolvedores as $d) {
+    foreach($desenvolvedores as $d) {
         echo "Nome do desenvolvedor: " . $d->nome . "<br>";
         echo "Cargo: " . $d->cargo . "<br>";
         if (count($d->projetos ) > 0) {
@@ -31,6 +31,6 @@ Route::get('/desenvolvedor_projetos', function () {
             echo "</ul>";
         }
         echo "<hr>";
-    }*/
-    return $desenvolvedores->toJson();
+    }
+   // return $desenvolvedores->toJson();
 });
