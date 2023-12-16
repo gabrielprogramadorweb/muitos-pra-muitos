@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Desenvolvedor;
 
 
 /*
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+Route::get('/desenvolvedor_projeto', function () {
+
+    $desenvolvedores = Desenvolvedor::all();
+    return $desenvolvedores->toJson();
 });
